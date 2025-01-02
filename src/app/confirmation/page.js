@@ -19,28 +19,35 @@ export default function ConfirmationPage() {
       <p className="mb-6">Thank you for your reservation, {name}.</p>
       <div className="border p-4 rounded bg-gray-100">
         <h2 className="font-bold mb-2">Reservation Details:</h2>
-        <p>
-          <strong>Booking ID:</strong> {id}
-        </p>
-        <p>
-          <strong>Name:</strong> {name}
-        </p>
-        <p>
-          <strong>Contact:</strong> {contact}
-        </p>
-        <p>
-          <strong>Date:</strong> {date}
-        </p>
-        <p>
-          <strong>Time:</strong> {time}
-        </p>
-        <p>
-          <strong>Guests:</strong> {guests}
-        </p>
+        <p><strong>Booking ID:</strong> {id}</p>
+        <p><strong>Name:</strong> {name}</p>
+        <p><strong>Contact:</strong> {contact}</p>
+        <p><strong>Date:</strong> {date}</p>
+        <p><strong>Time:</strong> {time}</p>
+        <p><strong>Guests:</strong> {guests}</p>
       </div>
+      
+      {/* Buttons for Get and Delete Booking */}
+      <div className="mt-6 space-y-4">
+        <button
+          onClick={() => window.location.href = `/get-booking?id=${id}`}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Get Booking Details
+        </button>
+
+        <button
+          onClick={() => window.location.href = `/delete-booking?id=${id}`}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Delete Booking
+        </button>
+      </div>
+
+      {/* Back to Home button */}
       <button
         onClick={() => window.location.href = "/"}
-        className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className="mt-6 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
       >
         Back to Home
       </button>
