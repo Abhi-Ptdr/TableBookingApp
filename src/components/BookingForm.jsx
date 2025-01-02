@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
@@ -11,7 +11,29 @@ export default function BookingForm() {
     guests: "",
   });
 
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (formData.date) {
+      fetchAvailableSlots(formData.date);
+    }
+  }, [formData.date]);
+
+  const fetchAvailableSlots = async (date) => {
+    try {
+      const response = await fetch(`/api/bookings/available-slots?date=${date}`);
+      const data = await response.json();
+      if (data.slots) {
+        setAvailableSlots(data.slots);
+      } else {
+        setAvailableSlots([]);
+      }
+    } catch (error) {
+      console.error("Error fetching available slots:", error);
+      setAvailableSlots([]);
+    }
+  };
 
   const validateForm = () => {
     const errors = {};
@@ -40,15 +62,6 @@ export default function BookingForm() {
     // Time validation
     if (!formData.time) {
       errors.time = "Time is required.";
-    } else {
-      const selectedDateTime = new Date(`${formData.date}T${formData.time}`);
-      if (formData.date === currentDate.toISOString().split("T")[0]) {
-        // If it's today's date, validate time
-        const currentTime = currentDate.toTimeString().split(" ")[0];
-        if (formData.time <= currentTime) {
-          errors.time = "Please select a future time.";
-        }
-      }
     }
 
     // Guests validation
@@ -91,13 +104,7 @@ export default function BookingForm() {
 
   const handleContactKeyDown = (e) => {
     // Allow backspace, delete, and navigation keys
-    const allowedKeys = [
-      "Backspace",
-      "Delete",
-      "ArrowLeft",
-      "ArrowRight",
-      "Tab",
-    ];
+    const allowedKeys = ["Backspace", "Delete", "ArrowLeft", "ArrowRight", "Tab"];
     if (!allowedKeys.includes(e.key) && isNaN(e.key)) {
       e.preventDefault();
     }
@@ -148,14 +155,26 @@ export default function BookingForm() {
       </div>
 
       <div>
-        <input
-          type="time"
+        <select
           name="time"
           value={formData.time}
           onChange={handleChange}
           className="p-2 border border-gray-300 rounded w-full"
           required
-        />
+        >
+          <option value="" disabled>
+            Select Time Slot
+          </option>
+          {availableSlots.length > 0 ? (
+            availableSlots.map((slot, index) => (
+              <option key={index} value={slot}>
+                {slot}
+              </option>
+            ))
+          ) : (
+            <option disabled>No available slots</option>
+          )}
+        </select>
         {errors.time && <p className="text-red-500 text-sm">{errors.time}</p>}
       </div>
 
