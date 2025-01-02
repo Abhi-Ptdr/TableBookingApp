@@ -1,3 +1,5 @@
+import '../styles/globals.css';  // Correct path to your globals.css
+
 export const metadata = {
   title: "Table Booking System",
   description: "Restaurant Table Booking Application",
