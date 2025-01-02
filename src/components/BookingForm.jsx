@@ -76,71 +76,71 @@ export default function BookingForm() {
     return Object.keys(errors).length === 0;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  
+  //   if (!validateForm()) return;
+  
+  //   try {
+  //     const response = await fetch("/api/bookings", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(formData),
+  //     });
+  
+  //     const result = await response.json();
+  
+  //     if (!response.ok) {
+  //       // Show the specific error message sent by the backend
+  //       alert(result.message);
+  //       return;
+  //     }
+  
+  //     if (result.message && result.booking) {
+  //       // Redirect to confirmation page on successful booking
+  //       const { name, contact, date, time, guests } = result.booking;
+  //       router.push(
+  //         `/confirmation?name=${encodeURIComponent(name)}&contact=${encodeURIComponent(
+  //           contact
+  //         )}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(
+  //           time
+  //         )}&guests=${encodeURIComponent(guests)}`
+  //       );
+  //     }
+  //   } catch (error) {
+  //     // Handle network or unexpected errors
+  //     console.error("An unexpected error occurred:", error);
+  //     alert("An unexpected error occurred. Please try again.");
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (!validateForm()) return;
   
-    try {
-      const response = await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+    const response = await fetch("/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
   
-      const result = await response.json();
+    const result = await response.json();
   
-      if (!response.ok) {
-        // Show the specific error message sent by the backend
-        alert(result.message);
-        return;
-      }
+    if (response.status === 400) {
+      // Show the specific error message sent by the backend
+      alert(result.message);
+      return;
+    }
   
-      if (result.message && result.booking) {
-        // Redirect to confirmation page on successful booking
-        const { name, contact, date, time, guests } = result.booking;
-        router.push(
-          `/confirmation?name=${encodeURIComponent(name)}&contact=${encodeURIComponent(
-            contact
-          )}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(
-            time
-          )}&guests=${encodeURIComponent(guests)}`
-        );
-      }
-    } catch (error) {
-      // Handle network or unexpected errors
-      console.error("An unexpected error occurred:", error);
-      alert("An unexpected error occurred. Please try again.");
+    if (result.message && result.booking) {
+      const { id, name, contact, date, time, guests } = result.booking;
+      // Redirect to the confirmation page with query parameters including id
+      router.push(
+        `/confirmation?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&contact=${encodeURIComponent(contact)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&guests=${encodeURIComponent(guests)}`
+      );
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!validateForm()) return;
-
-  //   const response = await fetch("/api/bookings", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(formData),
-  //   });
-
-  //   const result = await response.json();
-
-  //   if (result.message && result.booking) {
-  //     // Redirect to the confirmation page with query parameters
-  //     const { name, contact, date, time, guests } = result.booking;
-  //     router.push(
-  //       `/confirmation?name=${encodeURIComponent(name)}&contact=${encodeURIComponent(
-  //         contact
-  //       )}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(
-  //         time
-  //       )}&guests=${encodeURIComponent(guests)}`
-  //     );
-  //   } else {
-  //     alert("An error occurred while booking. Please try again.");
-  //   }
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,13 +1,29 @@
 import { NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid"; // Import uuid for generating unique IDs
 
-// Simulated in-memory storage for bookings (replace with a database in production)
+// In-memory bookings (replace with a database in production)
 const bookings = [
-  { date: "2025-01-01", time: "10:00" },
-  { date: "2025-01-01", time: "11:30" },
+  { id: "1", name: "John Doe", contact: "1234567890", date: "2025-01-01", time: "10:00", guests: 2 },
+  { id: "2", name: "Jane Doe", contact: "0987654321", date: "2025-01-02", time: "11:30", guests: 4 },
 ];
 
-// Handle GET requests to fetch all bookings
-export async function GET() {
+// Handle GET requests to fetch all bookings or specific booking by ID
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id"); // Retrieve specific booking by ID if provided
+
+  if (id) {
+    const booking = bookings.find((b) => b.id === id);
+    if (!booking) {
+      return NextResponse.json(
+        { message: "Booking not found." },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(booking);
+  }
+
+  // Return all bookings if no ID is specified
   return NextResponse.json(bookings);
 }
 
@@ -35,22 +51,32 @@ export async function POST(request) {
     );
   }
 
-  // Save the booking
-  bookings.push(data);
+  // Generate a unique ID for the booking
+  const newBooking = {
+    id: uuidv4(), // Generate a unique ID using uuid
+    ...data,
+  };
+
+  bookings.push(newBooking);
   return NextResponse.json({
     message: "Booking created successfully!",
-    booking: data,
+    booking: newBooking,
   });
 }
 
-// Handle DELETE requests (optional, for deleting a booking)
+// Handle DELETE requests to delete a booking
 export async function DELETE(request) {
-  const { date, time } = await request.json();
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
 
-  const bookingIndex = bookings.findIndex(
-    (booking) => booking.date === date && booking.time === time
-  );
+  if (!id) {
+    return NextResponse.json(
+      { message: "Booking ID is required." },
+      { status: 400 }
+    );
+  }
 
+  const bookingIndex = bookings.findIndex((b) => b.id === id);
   if (bookingIndex === -1) {
     return NextResponse.json(
       { message: "Booking not found." },

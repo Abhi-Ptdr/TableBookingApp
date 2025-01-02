@@ -1,10 +1,12 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation"; // To read query parameters
 
 export default function ConfirmationPage() {
   const searchParams = useSearchParams();
 
+  // Extract all booking details from query parameters
+  const id = searchParams.get("id");
   const name = searchParams.get("name");
   const contact = searchParams.get("contact");
   const date = searchParams.get("date");
@@ -18,6 +20,15 @@ export default function ConfirmationPage() {
       <div className="border p-4 rounded bg-gray-100">
         <h2 className="font-bold mb-2">Reservation Details:</h2>
         <p>
+          <strong>Booking ID:</strong> {id}
+        </p>
+        <p>
+          <strong>Name:</strong> {name}
+        </p>
+        <p>
+          <strong>Contact:</strong> {contact}
+        </p>
+        <p>
           <strong>Date:</strong> {date}
         </p>
         <p>
@@ -25,9 +36,6 @@ export default function ConfirmationPage() {
         </p>
         <p>
           <strong>Guests:</strong> {guests}
-        </p>
-        <p>
-          <strong>Contact:</strong> {contact}
         </p>
       </div>
       <button
