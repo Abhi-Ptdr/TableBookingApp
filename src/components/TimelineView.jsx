@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 
 export default function TimelineView({ date, bookedSlots, onSlotSelect }) {
   const allSlots = [
@@ -23,10 +23,10 @@ export default function TimelineView({ date, bookedSlots, onSlotSelect }) {
             onClick={() => onSlotSelect(slot)}
             className={`px-4 py-2 rounded ${
               bookedSlots.includes(slot)
-                ? "bg-red-500 text-white cursor-not-allowed"
-                : "bg-green-500 text-white hover:bg-green-600"
+                ? "bg-red-500 text-white cursor-not-allowed" // Booked slots (red)
+                : "bg-green-500 text-white hover:bg-green-600" // Available slots (green)
             }`}
-            disabled={bookedSlots.includes(slot)}
+            disabled={bookedSlots.includes(slot)} // Disable button for booked slots
           >
             {slot}
           </button>

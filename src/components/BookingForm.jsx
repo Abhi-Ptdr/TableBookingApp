@@ -15,17 +15,14 @@ export default function BookingForm({ date, time }) {
   const validateForm = () => {
     const errors = {};
 
-    // Name validation
     if (!formData.name.trim()) {
       errors.name = "Name is required.";
     }
 
-    // Contact validation
     if (!/^\d{10}$/.test(formData.contact)) {
       errors.contact = "Contact number must be exactly 10 numeric characters.";
     }
 
-    // Guests validation
     if (!formData.guests || formData.guests <= 0) {
       errors.guests = "Number of guests must be a positive number.";
     }
@@ -45,21 +42,26 @@ export default function BookingForm({ date, time }) {
       time,
     };
 
-    const response = await fetch("/api/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bookingDetails),
-    });
+    try {
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingDetails),
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (response.ok) {
-      const { id, name, contact, date, time, guests } = result.booking;
-      router.push(
-        `/confirmation?id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&contact=${encodeURIComponent(contact)}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}&guests=${encodeURIComponent(guests)}`
-      );
-    } else {
-      alert(result.message || "An error occurred. Please try again.");
+      if (response.ok) {
+        // Redirect to the confirmation page with the booking ID
+        router.push(
+          `/confirmation?id=${result.booking.id}`
+        );
+      } else {
+        alert(result.message || "An error occurred. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -92,9 +94,7 @@ export default function BookingForm({ date, time }) {
         className="p-2 border border-gray-300 rounded w-full"
         required
       />
-      {errors.contact && (
-        <p className="text-red-500 text-sm">{errors.contact}</p>
-      )}
+      {errors.contact && <p className="text-red-500 text-sm">{errors.contact}</p>}
 
       <input
         type="number"
@@ -106,9 +106,7 @@ export default function BookingForm({ date, time }) {
         min="1"
         required
       />
-      {errors.guests && (
-        <p className="text-red-500 text-sm">{errors.guests}</p>
-      )}
+      {errors.guests && <p className="text-red-500 text-sm">{errors.guests}</p>}
 
       <button
         type="submit"

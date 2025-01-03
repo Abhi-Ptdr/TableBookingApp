@@ -25,6 +25,9 @@ export default function BookingPage() {
     const formattedDate = formatDate(date); // Format the date as YYYY-MM-DD
     const response = await fetch(`/api/bookings/slots?date=${formattedDate}`);
     const data = await response.json();
+    console.log("Booked Slots Data:", data); // Log to verify data
+
+    // Ensure data.bookedSlots is an array of time slots
     setBookedSlots(data.bookedSlots || []);
   };
 
@@ -39,11 +42,11 @@ export default function BookingPage() {
       {/* Calendar View */}
       <CalendarView onDateSelect={handleDateSelect} />
 
-      {/* Timeline View */}
+      {/* Timeline View with Color-Coding for Slots */}
       {selectedDate && (
         <TimelineView
           date={selectedDate.toDateString()}
-          bookedSlots={bookedSlots}
+          bookedSlots={bookedSlots} // Pass booked slots here
           onSlotSelect={handleSlotSelect}
         />
       )}

@@ -1,17 +1,62 @@
 "use client";
 
-import { useSearchParams } from "next/navigation"; // To read query parameters
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function ConfirmationPage() {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // To read query parameters
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [error, setError] = useState(null);
 
-  // Extract all booking details from query parameters
-  const id = searchParams.get("id");
-  const name = searchParams.get("name");
-  const contact = searchParams.get("contact");
-  const date = searchParams.get("date");
-  const time = searchParams.get("time");
-  const guests = searchParams.get("guests");
+  // Extract booking ID from query parameters
+  const bookingId = searchParams.get("id");
+
+  useEffect(() => {
+    const fetchBookingDetails = async () => {
+      if (!bookingId) {
+        setError("Booking ID is missing.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/bookings/${bookingId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch booking details.");
+        }
+        const data = await response.json();
+        setBookingDetails(data.booking);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchBookingDetails();
+  }, [bookingId]);
+
+  if (error) {
+    return (
+      <div className="max-w-xl mx-auto mt-10 text-center">
+        <h1 className="text-2xl font-bold mb-4">Error</h1>
+        <p className="text-red-500">{error}</p>
+        <button
+          onClick={() => window.location.href = "/"}
+          className="mt-6 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+        >
+          Back to Home
+        </button>
+      </div>
+    );
+  }
+
+  if (!bookingDetails) {
+    return (
+      <div className="max-w-xl mx-auto mt-10 text-center">
+        <h1 className="text-2xl font-bold mb-4">Loading...</h1>
+      </div>
+    );
+  }
+
+  const { id, name, contact, date, time, guests } = bookingDetails;
 
   return (
     <div className="max-w-xl mx-auto mt-10 text-center">
@@ -26,25 +71,6 @@ export default function ConfirmationPage() {
         <p><strong>Time:</strong> {time}</p>
         <p><strong>Guests:</strong> {guests}</p>
       </div>
-      
-      {/* Buttons for Get and Delete Booking */}
-      <div className="mt-6 space-y-4">
-        <button
-          onClick={() => window.location.href = `/get-booking?id=${id}`}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Get Booking Details
-        </button>
-
-        <button
-          onClick={() => window.location.href = `/delete-booking?id=${id}`}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Delete Booking
-        </button>
-      </div>
-
-      {/* Back to Home button */}
       <button
         onClick={() => window.location.href = "/"}
         className="mt-6 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
