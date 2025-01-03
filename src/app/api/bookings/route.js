@@ -53,9 +53,10 @@ export async function POST(request) {
 
   // Generate a unique ID for the booking
   const newBooking = {
-    id: uuidv4(), // Generate a unique ID using uuid
     ...data,
-  };
+    id: uuidv4(),
+    date: data.date, // Already formatted as YYYY-MM-DD from the frontend
+  };  
 
   bookings.push(newBooking);
   return NextResponse.json({
