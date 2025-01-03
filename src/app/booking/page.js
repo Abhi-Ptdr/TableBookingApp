@@ -36,27 +36,36 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Book Your Slot</h1>
+    <div className="max-w-full sm:max-w-4xl mx-auto px-4 sm:px-6 md:px-8 mt-10">
+      <h1 className="text-2xl font-bold mb-6 text-center">Book Your Slot</h1>
 
-      {/* Calendar View */}
-      <CalendarView onDateSelect={handleDateSelect} />
+      {/* Calendar and Timeline Layout */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* Calendar View */}
+        <div className="flex justify-center">
+          <CalendarView onDateSelect={handleDateSelect} />
+        </div>
 
-      {/* Timeline View with Color-Coding for Slots */}
-      {selectedDate && (
-        <TimelineView
-          date={selectedDate.toDateString()}
-          bookedSlots={bookedSlots} // Pass booked slots here
-          onSlotSelect={handleSlotSelect}
-        />
-      )}
+        {/* Timeline View */}
+        {selectedDate && (
+          <div className="flex justify-center">
+            <TimelineView
+              date={selectedDate.toDateString()}
+              bookedSlots={bookedSlots} // Pass booked slots here
+              onSlotSelect={handleSlotSelect}
+            />
+          </div>
+        )}
+      </div>
 
       {/* Booking Form */}
       {selectedSlot && (
-        <BookingForm
-          date={formatDate(selectedDate)} // Pass formatted date
-          time={selectedSlot}
-        />
+        <div className="mt-8">
+          <BookingForm
+            date={formatDate(selectedDate)} // Pass formatted date
+            time={selectedSlot}
+          />
+        </div>
       )}
     </div>
   );
