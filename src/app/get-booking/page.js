@@ -1,18 +1,73 @@
-import GetBooking from "@/components/GetBooking";
-import Link from "next/link"; // To navigate back to the homepage
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function GetBookingPage() {
-  return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Get Booking</h1>
-      <GetBooking />
+  const searchParams = useSearchParams();
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [error, setError] = useState(null);
 
-      {/* Back to Home button */}
-      <div className="mt-6">
-        <Link href="/" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-          Back to Home
-        </Link>
+  const bookingId = searchParams.get("id");
+
+  useEffect(() => {
+    const fetchBookingDetails = async () => {
+      if (!bookingId) {
+        setError("Booking ID is missing.");
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/bookings/${bookingId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch booking details.");
+        }
+        const data = await response.json();
+        setBookingDetails(data.booking);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchBookingDetails();
+  }, [bookingId]);
+
+  if (error) {
+    return (
+      <div className="max-w-xl mx-auto mt-10 text-center">
+        <h1 className="text-2xl font-bold mb-4">Error</h1>
+        <p className="text-red-500">{error}</p>
       </div>
+    );
+  }
+
+  if (!bookingDetails) {
+    return (
+      <div className="max-w-xl mx-auto mt-10 text-center">
+        <h1 className="text-2xl font-bold mb-4">Loading...</h1>
+      </div>
+    );
+  }
+
+  const { id, name, contact, date, time, guests } = bookingDetails;
+
+  return (
+    <div className="max-w-xl mx-auto mt-10 text-center">
+      <h1 className="text-2xl font-bold mb-4">Booking Details</h1>
+      <div className="border p-4 rounded bg-gray-100">
+        <p><strong>Booking ID:</strong> {id}</p>
+        <p><strong>Name:</strong> {name}</p>
+        <p><strong>Contact:</strong> {contact}</p>
+        <p><strong>Date:</strong> {date}</p>
+        <p><strong>Time:</strong> {time}</p>
+        <p><strong>Guests:</strong> {guests}</p>
+      </div>
+      <button
+        onClick={() => window.location.href = "/"}
+        className="mt-6 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+      >
+        Back to Home
+      </button>
     </div>
   );
 }

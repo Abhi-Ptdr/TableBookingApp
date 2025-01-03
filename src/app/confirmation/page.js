@@ -8,8 +8,7 @@ export default function ConfirmationPage() {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [error, setError] = useState(null);
 
-  // Extract booking ID from query parameters
-  const bookingId = searchParams.get("id");
+  const bookingId = searchParams.get("id"); // Extract the booking ID from query params
 
   useEffect(() => {
     const fetchBookingDetails = async () => {
@@ -71,6 +70,25 @@ export default function ConfirmationPage() {
         <p><strong>Time:</strong> {time}</p>
         <p><strong>Guests:</strong> {guests}</p>
       </div>
+
+      {/* Buttons for Get and Delete Booking */}
+      <div className="mt-6 space-y-4">
+        <button
+          onClick={() => window.location.href = `/get-booking?id=${id}`}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Get Booking Details
+        </button>
+
+        <button
+          onClick={() => window.location.href = `/delete-booking?id=${id}`}
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+        >
+          Delete Booking
+        </button>
+      </div>
+
+      {/* Back to Home button */}
       <button
         onClick={() => window.location.href = "/"}
         className="mt-6 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
