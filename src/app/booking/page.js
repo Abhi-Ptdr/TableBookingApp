@@ -25,7 +25,7 @@ export default function BookingPage() {
     const formattedDate = formatDate(date); // Format the date as YYYY-MM-DD
     const response = await fetch(`/api/bookings/slots?date=${formattedDate}`);
     const data = await response.json();
-    console.log("Booked Slots Data:", data); // Log to verify data
+    // console.log("Booked Slots Data:", data); // Log to verify data
 
     // Ensure data.bookedSlots is an array of time slots
     setBookedSlots(data.bookedSlots || []);

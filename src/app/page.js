@@ -81,48 +81,51 @@ export default function HomePage() {
 
   return (
     <div className="max-w-xl mx-auto mt-10 text-center px-4 sm:px-6 md:px-8">
-      <h1 className="text-2xl font-bold mb-4">Find Your Booking</h1>
 
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleInputChange}
-          className="p-2 border border-gray-300 rounded w-full"
-          required
-        />
-        <input
-          type="text"
-          name="contact"
-          placeholder="Your Contact Number"
-          value={formData.contact}
-          onChange={handleInputChange}
-          onKeyDown={handleContactKeyDown} // Prevent non-numeric input and restrict to 10 digits
-          className="p-2 border border-gray-300 rounded w-full"
-          required
-        />
-        {error && name === "contact" && <p className="text-red-500 text-sm">{error}</p>}
-
-        <button
-          type="submit"
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Get Booking Details
-        </button>
-      </form>
-
-      {/* "Book Now" Button */}
-      <div className="mt-6">
+      <h1 className="text-2xl font-bold mb-4 pt-8">Wellcome to Restaurant Booking</h1>
+      <p className="text-sm mb-8">Book your table online with ease.</p>
         <button
           onClick={() => router.push("/booking")}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 w-full sm:w-auto"
+          className="mb-8 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 w-full sm:w-auto"
         >
           Book Now
         </button>
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">Find Your Booking</h2>
+        <p className="text-sm mb-8">Already have a booking? Get details here..</p>
+
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleInputChange}
+            className="p-2 border border-gray-300 rounded w-full"
+            required
+          />
+          <input
+            type="text"
+            name="contact"
+            placeholder="Your Contact Number"
+            value={formData.contact}
+            onChange={handleInputChange}
+            onKeyDown={handleContactKeyDown} // Prevent non-numeric input and restrict to 10 digits
+            className="p-2 border border-gray-300 rounded w-full"
+            required
+          />
+          {error && name === "contact" && <p className="text-red-500 text-sm">{error}</p>}
+
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Get Booking Details
+          </button>
+        </form>
       </div>
     </div>
   );

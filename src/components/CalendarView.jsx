@@ -41,7 +41,7 @@ export default function CalendarView({ onDateSelect }) {
         value={selectedDate}
         tileDisabled={disablePastDates} // Disable past dates
       />
-      <div className="mt-4">
+      {/* <div className="mt-4">
         <h2 className="text-lg font-bold">Booked Slots:</h2>
         <ul>
           {bookedSlots.length > 0 ? (
@@ -54,7 +54,7 @@ export default function CalendarView({ onDateSelect }) {
             <p className="text-green-500">All slots available</p>
           )}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }

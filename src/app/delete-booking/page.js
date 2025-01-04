@@ -55,7 +55,7 @@ export default function DeleteBookingPage() {
 
   return (
     <div className="max-w-xl mx-auto mt-10 text-center">
-      <h1 className="text-2xl font-bold mb-4">Delete Booking</h1>
+      <h1 className="text-2xl font-bold mb-4 pt-8">Delete Booking</h1>
       <p className="text-green-500">{message}</p>
       <button
         onClick={() => window.location.href = "/"}
