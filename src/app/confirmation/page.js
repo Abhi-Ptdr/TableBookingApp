@@ -1,9 +1,17 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={<p>Loading confirmation details...</p>}>
+      <ConfirmationDetails />
+    </Suspense>
+  );
+}
+
+function ConfirmationDetails() {
   const searchParams = useSearchParams(); // To read query parameters
   const [bookingDetails, setBookingDetails] = useState(null);
   const [error, setError] = useState(null);
@@ -84,4 +92,3 @@ export default function ConfirmationPage() {
     </div>
   );
 }
-

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 // GET method to fetch booking details by ID
 export async function GET(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
 
   if (!id) {
     return NextResponse.json(
@@ -43,7 +43,7 @@ export async function GET(request, { params }) {
 
 // DELETE method to delete booking by ID
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  const { id } = await params;
 
   if (!id) {
     return NextResponse.json(
