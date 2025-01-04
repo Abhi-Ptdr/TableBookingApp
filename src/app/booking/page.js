@@ -46,16 +46,14 @@ export default function BookingPage() {
           <CalendarView onDateSelect={handleDateSelect} />
         </div>
 
-        {/* Timeline View */}
-        {selectedDate && (
-          <div className="flex justify-center">
-            <TimelineView
-              date={selectedDate.toDateString()}
-              bookedSlots={bookedSlots} // Pass booked slots here
-              onSlotSelect={handleSlotSelect}
-            />
-          </div>
-        )}
+        {/* Timeline View - Always Visible */}
+        <div className="flex justify-center">
+          <TimelineView
+            date={selectedDate ? selectedDate.toDateString() : "No Date Selected"} // Show placeholder if no date
+            bookedSlots={selectedDate ? bookedSlots : []} // Pass empty booked slots if no date is selected
+            onSlotSelect={handleSlotSelect}
+          />
+        </div>
       </div>
 
       {/* Booking Form */}
