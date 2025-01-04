@@ -67,7 +67,20 @@ export default function BookingForm({ date, time }) {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === "contact") {
+      // Allow only numeric input and limit to 10 digits
+      const numericValue = value.replace(/\D/g, '').slice(0, 10);
+      setFormData({ ...formData, [name]: numericValue });
+
+      // Warn if the contact number is less than 10 digits
+      if (numericValue.length < 10) {
+        setErrors({ ...errors, contact: "Contact number must be exactly 10 numeric characters." });
+      } else {
+        setErrors({ ...errors, contact: "" });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (
