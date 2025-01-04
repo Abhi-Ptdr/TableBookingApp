@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar"; // React Calendar
 import "react-calendar/dist/Calendar.css"; // Default styles for react-calendar
@@ -22,9 +24,23 @@ export default function CalendarView({ onDateSelect }) {
     onDateSelect(date); // Pass selected date to parent
   };
 
+  const disablePastDates = ({ date, view }) => {
+    // Disable all dates before today
+    if (view === "month") {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Remove time from today for comparison
+      return date < today;
+    }
+    return false;
+  };
+
   return (
     <div className="max-w-md mx-auto">
-      <Calendar onChange={handleDateChange} value={selectedDate} />
+      <Calendar
+        onChange={handleDateChange}
+        value={selectedDate}
+        tileDisabled={disablePastDates} // Disable past dates
+      />
       <div className="mt-4">
         <h2 className="text-lg font-bold">Booked Slots:</h2>
         <ul>
