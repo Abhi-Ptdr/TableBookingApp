@@ -1,14 +1,24 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
+// Main component wrapping the child in Suspense
 export default function GetBookingPage() {
-  const searchParams = useSearchParams();
+  return (
+    <Suspense fallback={<p>Loading booking details...</p>}>
+      <GetBookingDetails />
+    </Suspense>
+  );
+}
+
+// Child component to handle the logic of fetching booking details
+function GetBookingDetails() {
+  const searchParams = useSearchParams();  // To read query parameters
   const [bookingDetails, setBookingDetails] = useState(null);
   const [error, setError] = useState(null);
 
-  const bookingId = searchParams.get("id");
+  const bookingId = searchParams.get("id");  // Extract the booking ID from query params
 
   useEffect(() => {
     const fetchBookingDetails = async () => {

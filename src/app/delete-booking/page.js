@@ -1,14 +1,24 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 
+// Main component wrapping the child in Suspense
 export default function DeleteBookingPage() {
-  const searchParams = useSearchParams();
+  return (
+    <Suspense fallback={<p>Deleting booking...</p>}>
+      <DeleteBookingDetails />
+    </Suspense>
+  );
+}
+
+// Child component to handle the logic of deleting booking
+function DeleteBookingDetails() {
+  const searchParams = useSearchParams();  // To read query parameters
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
 
-  const bookingId = searchParams.get("id");
+  const bookingId = searchParams.get("id");  // Extract the booking ID from query params
 
   useEffect(() => {
     const deleteBooking = async () => {
