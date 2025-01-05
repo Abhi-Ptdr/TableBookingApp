@@ -82,7 +82,7 @@ export default function HomePage() {
   return (
     <div className="max-w-xl mx-auto mt-10 text-center px-4 sm:px-6 md:px-8">
 
-      <h1 className="text-2xl font-bold mb-4 pt-8">Wellcome to Restaurant Booking</h1>
+      <h1 className="text-2xl font-bold mb-4 pt-8">Welcome to Restaurant Booking</h1>
       <p className="text-sm mb-8">Book your table online with ease.</p>
         <button
           onClick={() => router.push("/booking")}
